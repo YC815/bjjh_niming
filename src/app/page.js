@@ -43,8 +43,8 @@ export default function Home() {
       <textarea
         value={text}
         onChange={(e) => setText(e.target.value)}
-        placeholder="輸入你的匿名訊息...(50字內)"
-        maxLength={50}
+        placeholder="輸入你的匿名訊息...(52字內)"
+        maxLength={52}
         className="mb-4 w-3/4 md:w-1/3 h-48 p-4 text-black rounded-md" // 增加了高度为 h-36，内边距为 p-4
       />
       <button
