@@ -10,25 +10,22 @@ from flask import Flask, request, jsonify
 from PIL import Image, ImageDraw, ImageFont
 from openai import OpenAI
 import re
-client = OpenAI(api_key='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')
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException
+
 load_dotenv()
 client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
 
 
-# 用戶和AI的訊息
-user = "第二次測試"
-ai_response = client.chat.completions.create(model="gpt-3.5-turbo", messages=[
-    {"role": "user", "content": "請在68字內簡單幽默的回答\"%s\"。" % (user)}
-])
-ai_response = re.search(r"content='(.*?)', role", str(ai_response))
-ai = str(ai_response.group(1))
-user = user.replace('\n', ' ')  # 將換行符替換為空格
-user = [user[i:i + 14] for i in range(0, len(user), 14)]
-user = "\n".join(user)
-print(ai_response)
-ai = ai.replace('\n', ' ')  # 將換行符替換為空格
-ai = [ai[i:i + 17] for i in range(0, len(ai), 17)]
-ai = "\n".join(ai)
+def wait_for_clickable(driver, locator, timeout):
+    try:
+        WebDriverWait(driver, timeout, 1).until(
+            EC.element_to_be_clickable(locator))
+        # return True
+    except TimeoutException:
+        print("Wait TimeoutException:%s" % str(locator))
+        # return False
+
 
 # 打開圖片
 image = Image.open('public/ins.png')
@@ -77,8 +74,9 @@ element = wait.until(lambda driver: driver.find_element(By.XPATH, element_xpath)
 element.click()
 
 wait = WebDriverWait(driver, 10)
-element_xpath = "/html/body/div[6]/div[1]/div/div[3]/div/div/div/div/div/div/div/div[2]/div[1]/div/div/div[2]/div/button"
+element_xpath = "/html/body/div[10]/div[1]/div/div[3]/div/div/div/div/div/div/div/div[2]/div[1]/div/div/div[2]/div/button"
 
+wait_for_clickable(driver, (By.XPATH, element_xpath), 10)
 imgInput = driver.find_element(By.XPATH, element_xpath)
 imgInput.send_keys('public/ready.png')
 
