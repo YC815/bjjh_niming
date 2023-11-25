@@ -1,34 +1,34 @@
-import openai
-from PIL import Image, ImageDraw, ImageFont
-from flask import Flask, request, jsonify
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service as ChromeService
-from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-import os
-from dotenv import load_dotenv
 from selenium.webdriver.common.action_chains import ActionChains
+from dotenv import load_dotenv
+import os
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.by import By
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.service import Service as ChromeService
+from selenium import webdriver
+from flask import Flask, request, jsonify
+from PIL import Image, ImageDraw, ImageFont
+from openai import OpenAI
+import re
+client = OpenAI(api_key='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')
 load_dotenv()
 
-openai.api_key = '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'
 
 # 用戶和AI的訊息
 user = "第二次測試"
-# ai_response = openai.ChatCompletion.create(
-#     model="gpt-3.5-turbo",
-#     messages=[
-#         {"role": "user", "content": "請在68字內簡單幽默的回答\"%s\"。" % (user)}
-#     ]
-# )
+ai_response = client.chat.completions.create(model="gpt-3.5-turbo", messages=[
+    {"role": "user", "content": "請在68字內簡單幽默的回答\"%s\"。" % (user)}
+])
+ai_response = re.search(r"content='(.*?)', role", str(ai_response))
+ai = str(ai_response.group(1))
 user = user.replace('\n', ' ')  # 將換行符替換為空格
 user = [user[i:i + 14] for i in range(0, len(user), 14)]
 user = "\n".join(user)
+print(ai_response)
+ai = ai.replace('\n', ' ')  # 將換行符替換為空格
+ai = [ai[i:i + 17] for i in range(0, len(ai), 17)]
+ai = "\n".join(ai)
 
-# ai = ai_response.choices[0].message["content"].replace('\n', ' ')  # 將換行符替換為空格
-# ai = [ai[i:i + 17] for i in range(0, len(ai), 17)]
-# ai = "\n".join(ai)
-ai = "hello"
 # 打開圖片
 image = Image.open('public/ins.png')
 draw = ImageDraw.Draw(image)

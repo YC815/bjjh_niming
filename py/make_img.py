@@ -1,16 +1,16 @@
 from PIL import Image, ImageDraw, ImageFont
-import openai
+from openai import OpenAI
 
-openai.api_key = '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'
+client = OpenAI(api_key='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')
+
+
 
 # 用戶和AI的訊息
 user = "笑死今天好累"
-ai_response = openai.ChatCompletion.create(
-    model="gpt-3.5-turbo",
-    messages=[
-        {"role": "user", "content": "請在68字內簡單幽默的回答\"%s\"。" % (user)}
-    ]
-)
+ai_response = client.chat.completions.create(model="gpt-3.5-turbo",
+messages=[
+    {"role": "user", "content": "請在68字內簡單幽默的回答\"%s\"。" % (user)}
+])
 user = user.replace('\n', ' ')  # 將換行符替換為空格
 user = [user[i:i + 14] for i in range(0, len(user), 14)]
 user = "\n".join(user)
