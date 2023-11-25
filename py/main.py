@@ -15,20 +15,20 @@ openai.api_key = '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'
 
 # 用戶和AI的訊息
 user = "第二次測試"
-ai_response = openai.ChatCompletion.create(
-    model="gpt-3.5-turbo",
-    messages=[
-        {"role": "user", "content": "請在68字內簡單幽默的回答\"%s\"。" % (user)}
-    ]
-)
+# ai_response = openai.ChatCompletion.create(
+#     model="gpt-3.5-turbo",
+#     messages=[
+#         {"role": "user", "content": "請在68字內簡單幽默的回答\"%s\"。" % (user)}
+#     ]
+# )
 user = user.replace('\n', ' ')  # 將換行符替換為空格
 user = [user[i:i + 14] for i in range(0, len(user), 14)]
 user = "\n".join(user)
 
-ai = ai_response.choices[0].message["content"].replace('\n', ' ')  # 將換行符替換為空格
-ai = [ai[i:i + 17] for i in range(0, len(ai), 17)]
-ai = "\n".join(ai)
-
+# ai = ai_response.choices[0].message["content"].replace('\n', ' ')  # 將換行符替換為空格
+# ai = [ai[i:i + 17] for i in range(0, len(ai), 17)]
+# ai = "\n".join(ai)
+ai = "hello"
 # 打開圖片
 image = Image.open('public/ins.png')
 draw = ImageDraw.Draw(image)
