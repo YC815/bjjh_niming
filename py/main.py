@@ -12,6 +12,7 @@ from openai import OpenAI
 import re
 client = OpenAI(api_key='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')
 load_dotenv()
+client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
 
 
 # 用戶和AI的訊息
@@ -58,7 +59,7 @@ wait = WebDriverWait(driver, 10)
 
 element_xpath = "/html/body/div[2]/div/div/div[2]/div/div/div/div[1]/section/main/article/div[2]/div[1]/div[2]/form/div/div[1]/div/label/input"
 element = wait.until(lambda driver: driver.find_element(By.XPATH, element_xpath))
-element.send_keys("bjjh.niming.5")
+element.send_keys(os.getenv("USERNAME"))
 
 element_xpath = "/html/body/div[2]/div/div/div[2]/div/div/div/div[1]/section/main/article/div[2]/div[1]/div[2]/form/div/div[2]/div/label/input"
 element = wait.until(lambda driver: driver.find_element(By.XPATH, element_xpath))
