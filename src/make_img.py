@@ -1,23 +1,40 @@
-from flask import Flask, request, jsonify
+from PIL import Image, ImageDraw, ImageFont
+import openai
 
-app = Flask(__name__)
+openai.api_key = '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'
 
-# 定义一个用于处理POST请求的路由
+# 用戶和AI的訊息
+user = "笑死今天好累"
+ai_response = openai.ChatCompletion.create(
+    model="gpt-3.5-turbo",
+    messages=[
+        {"role": "user", "content": "請在68字內簡單幽默的回答\"%s\"。" % (user)}
+    ]
+)
+user = user.replace('\n', ' ')  # 將換行符替換為空格
+user = [user[i:i + 14] for i in range(0, len(user), 14)]
+user = "\n".join(user)
 
+ai = ai_response.choices[0].message["content"].replace('\n', ' ')  # 將換行符替換為空格
+ai = [ai[i:i + 17] for i in range(0, len(ai), 17)]
+ai = "\n".join(ai)
 
-@app.route('/processData', methods=['POST'])
-def process_data():
-    try:
-        # 从请求中获取JSON数据
-        data = request.get_json()
-        text = data.get('text')
+# 打開圖片
+image = Image.open('public/ins.png')
+draw = ImageDraw.Draw(image)
 
-        print(text)
-        return jsonify({"result": text})
+# 加載一個支持中文的字體
+font_path = "public/NotoSansTC-Regular.ttf"  # 替換成你的中文字體路徑
+font = ImageFont.truetype(font_path, size=66)  # 設置字體大小
 
-    except Exception as e:
-        return jsonify({"error": str(e)})
+# 繪制文本
+text_position_user = (50, 66)  # 調整文字的位置
+text_color = 'rgb(255, 255, 255)'  # 設定文字顏色
+draw.text(text_position_user, user, fill=text_color, font=font)
 
+font = ImageFont.truetype(font_path, size=56)
+text_position_ai = (50, 700)  # 調整文字的位置
+draw.text(text_position_ai, ai, fill=text_color, font=font)
 
-if __name__ == '__main__':
-    app.run(debug=True)
+# 保存圖片
+image.save('public/ready.png')
