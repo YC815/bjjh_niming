@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 from selenium.webdriver.common.action_chains import ActionChains
 load_dotenv()
 
-openai.api_key = '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'
+openai.api_key = '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'
 
 # 用戶和AI的訊息
 user = "第二次測試"
