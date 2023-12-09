@@ -18,7 +18,7 @@ load_dotenv()
 client = OpenAI(api_key=os.getenv('API_KEY'))
 
 # 用戶和AI的訊息
-user = "第四次測試"
+user = "第五次測試"
 ai_response = client.chat.completions.create(model="gpt-3.5-turbo", messages=[
     {"role": "user", "content": "請在68字內簡單幽默的回答\"%s\"。" % (user)}
 ])
